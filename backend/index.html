@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dovii AI - Your Cosmic Intelligence</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #ffffff;
+        }
+
+        /* Animated starfield background */
+        .starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .shooting-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: linear-gradient(45deg, #ffffff, #64ffda);
+            border-radius: 50%;
+            animation: shoot 3s linear infinite;
+        }
+
+        @keyframes shoot {
+            0% {
+                transform: translateX(-100px) translateY(-100px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(100vw) translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        /* Welcome Page */
+        .welcome-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .cosmic-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(100, 255, 218, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .welcome-title {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #64ffda, #00bcd4, #2196f3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(100, 255, 218, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px rgba(100, 255, 218, 0.5)); }
+            to { filter: drop-shadow(0 0 40px rgba(100, 255, 218, 0.8)); }
+        }
+
+        .welcome-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            color: #b3b3b3;
+            font-weight: 300;
+        }
+
+        .chat-button {
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, #64ffda, #00bcd4);
+            color: #000;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(100, 255, 218, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chat-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(100, 255, 218, 0.5);
+        }
+
+        .chat-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .chat-button:hover::before {
+            left: 100%;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            z-index: 1000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-animation {
+            width: 100px;
+            height: 100px;
+            border: 3px solid rgba(100, 255, 218, 0.3);
+            border-top: 3px solid #64ffda;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 1.5rem;
+            color: #64ffda;
+            animation: fade 2s ease-in-out infinite;
+        }
+
+        @keyframes fade {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Chat Interface */
+        .chat-interface {
+            display: none;
+            height: 100vh;
+            background: rgba(10, 10, 10, 0.95);
+        }
+
+        .chat-container {
+            display: flex;
+            height: 100%;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: rgba(20, 20, 20, 0.9);
+            border-right: 1px solid rgba(100, 255, 218, 0.3);
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            color: #64ffda;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .chat-history-item {
+            padding: 12px;
+            margin-bottom: 8px;
+            background: rgba(100, 255, 218, 0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+        }
+
+        .chat-history-item:hover {
+            background: rgba(100, 255, 218, 0.2);
+            transform: translateX(5px);
+        }
+
+        .chat-history-item.active {
+            background: rgba(100, 255, 218, 0.3);
+            border-color: #64ffda;
+        }
+
+        .new-chat-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(45deg, #64ffda, #00bcd4);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .new-chat-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(100, 255, 218, 0.3);
+        }
+
+        .main-chat {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .chat-header {
+            padding: 20px;
+            background: rgba(20, 20, 20, 0.9);
+            border-bottom: 1px solid rgba(100, 255, 218, 0.3);
+            text-align: center;
+        }
+
+        .chat-header h2 {
+            color: #64ffda;
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .chat-header p {
+            color: #b3b3b3;
+            font-size: 0.9rem;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: rgba(5, 5, 5, 0.3);
+        }
+
+        .message {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 15px;
+            max-width: 70%;
+            position: relative;
+            animation: messageAppear 0.5s ease-out;
+        }
+
+        @keyframes messageAppear {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.user {
+            background: linear-gradient(45deg, #64ffda, #00bcd4);
+            color: #000;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message.ai {
+            background: rgba(100, 255, 218, 0.1);
+            color: #ffffff;
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            border-bottom-left-radius: 5px;
+        }
+        /* AI Embed Message for code blocks */
+        .ai-embed-msg {
+            background: #23272e;
+            border-left: 4px solid #64ffda;
+            border-radius: 8px;
+            margin: 12px 0;
+            padding: 12px 16px;
+            color: #e0e0e0;
+            position: relative;
+        }
+        .ai-embed-msg .embed-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95em;
+            margin-bottom: 6px;
+            color: #64ffda;
+        }
+        .ai-embed-msg .copy-btn {
+            background: #222;
+            color: #64ffda;
+            border: none;
+            border-radius: 4px;
+            padding: 2px 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background 0.2s;
+        }
+        .ai-embed-msg .copy-btn:hover {
+            background: #333;
+        }
+        .ai-embed-msg pre {
+            background: none;
+            border: none;
+            margin: 0;
+            padding: 0;
+            color: #e0e0e0;
+            font-size: 1em;
+            overflow-x: auto;
+        }
+
+        .message-input-container {
+            padding: 20px;
+            background: rgba(20, 20, 20, 0.9);
+            border-top: 1px solid rgba(100, 255, 218, 0.3);
+        }
+
+        .message-input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(100, 255, 218, 0.1);
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            border-radius: 25px;
+            color: #ffffff;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .message-input:focus {
+            border-color: #64ffda;
+            box-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+        }
+
+        .message-input::placeholder {
+            color: #888;
+        }
+
+        .send-button {
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(45deg, #64ffda, #00bcd4);
+            color: #000;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .send-button:hover {
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 5px 15px rgba(100, 255, 218, 0.4);
+        }
+
+        .attach-image-btn {
+            position: absolute;
+            right: 75px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(45deg, #64ffda, #00bcd4);
+            color: #000;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin-right: 8px;
+            transition: all 0.3s ease;
+        }
+        .attach-image-btn:hover {
+            box-shadow: 0 5px 15px rgba(100, 255, 218, 0.4);
+        }
+        .image-url-input {
+            display: block;
+            margin: 8px 0 0 0;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #64ffda;
+            background: rgba(100,255,218,0.07);
+            color: #fff;
+            font-size: 1em;
+        }
+        .file-upload-input {
+            display: block;
+            margin: 8px 0 0 0;
+            color: #fff;
+        }
+        .image-preview-thumb {
+            max-width: 60px;
+            max-height: 60px;
+            border-radius: 6px;
+            margin-right: 8px;
+            vertical-align: middle;
+            border: 1px solid #64ffda;
+        }
+        .image-preview-remove {
+            color: #ff6b6b;
+            cursor: pointer;
+            font-size: 1.1em;
+            margin-left: 6px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 250px;
+            }
+            
+            .welcome-title {
+                font-size: 2.5rem;
+            }
+            
+            .message {
+                max-width: 90%;
+            }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(20, 20, 20, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(100, 255, 218, 0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(100, 255, 218, 0.5);
+        }
+        .ai-image-loading {
+            display: inline-flex;
+            align-items: center;
+        }
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 3px solid #64ffda;
+            border-top: 3px solid #23272e;
+            border-radius: 50%;
+            margin-left: 8px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .ai-generated-image {
+            max-width: 320px;
+            max-height: 320px;
+            border-radius: 10px;
+            margin: 12px 0 0 0;
+            display: block;
+            box-shadow: 0 2px 12px rgba(100,255,218,0.15);
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Starfield Background -->
+    <div class="starfield" id="starfield"></div>
+
+    <!-- Welcome Page -->
+    <div class="welcome-container" id="welcomePage">
+        <div class="cosmic-glow"></div>
+        <h1 class="welcome-title">DOVII AI</h1>
+        <p class="welcome-subtitle">Your Cosmic Intelligence Companion</p>
+        <button class="chat-button" onclick="startChat()">
+            🚀 Launch Chat Experience
+        </button>
+    </div>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-animation"></div>
+        <div class="loading-text">Initializing Cosmic Intelligence...</div>
+    </div>
+
+    <!-- Chat Interface -->
+    <div class="chat-interface" id="chatInterface">
+        <div class="chat-container">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <button class="new-chat-btn" onclick="createNewChat()">+ New Chat</button>
+                <h3>Chat History</h3>
+                <div id="chatHistory">
+                    <!-- Chat history items will be populated here -->
+                </div>
+            </div>
+
+            <!-- Main Chat Area -->
+            <div class="main-chat">
+                <div class="chat-header">
+                    <h2>Dovii AI Assistant</h2>
+                    <p>Powered by Cosmic Intelligence • Ready to assist you</p>
+                </div>
+                
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message ai">
+                        <strong>Dovii AI:</strong> Greetings, cosmic explorer! I'm Dovii, your AI assistant from the digital cosmos. How may I help you navigate the universe of knowledge today? ✨
+                    </div>
+                </div>
+                
+                <div class="message-input-container">
+                    <input type="text" class="message-input" id="messageInput" placeholder="Type your message to the cosmos..." onkeypress="handleKeyPress(event)">
+                    <button class="send-button" onclick="sendMessage()">🚀</button>
+                    <button class="attach-image-btn" onclick="toggleImageInput()" title="Attach Image">🖼️</button>
+                    <input type="text" class="image-url-input" id="imageUrlInput" placeholder="Paste image URL here..." style="display:none;margin-top:8px;width:calc(100% - 50px);">
+                    <input type="file" accept="image/*" class="file-upload-input" id="fileUploadInput" style="display:none;margin-top:8px;width:calc(100% - 50px);">
+                    <div id="imagePreviewContainer" style="display:none;margin-top:8px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Generate animated starfield
+        function createStarfield() {
+            const starfield = document.getElementById('starfield');
+            
+            // Create static stars
+            for (let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 3 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 2 + 's';
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                starfield.appendChild(star);
+            }
+            
+            // Create shooting stars
+            for (let i = 0; i < 3; i++) {
+                const shootingStar = document.createElement('div');
+                shootingStar.className = 'shooting-star';
+                shootingStar.style.left = Math.random() * 100 + '%';
+                shootingStar.style.top = Math.random() * 100 + '%';
+                shootingStar.style.animationDelay = Math.random() * 5 + 's';
+                shootingStar.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                starfield.appendChild(shootingStar);
+            }
+        }
+
+        // Initialize starfield
+        createStarfield();
+
+        // Chat functionality
+        let currentChatId = null;
+        let chatHistory = [];
+        let chatCounter = 1;
+
+        // Load chat history from localStorage
+        function loadChatHistoryFromStorage() {
+            const stored = localStorage.getItem('dovii_chat_history');
+            if (stored) {
+                chatHistory = JSON.parse(stored);
+                if (chatHistory.length > 0) {
+                    chatCounter = chatHistory.length + 1;
+                }
+            } else {
+                chatHistory = [];
+            }
+        }
+
+        // Save chat history to localStorage
+        function saveChatHistoryToStorage() {
+            localStorage.setItem('dovii_chat_history', JSON.stringify(chatHistory));
+        }
+
+        function startChat() {
+            document.getElementById('welcomePage').style.display = 'none';
+            document.getElementById('loadingScreen').style.display = 'flex';
+            setTimeout(() => {
+                document.getElementById('loadingScreen').style.display = 'none';
+                document.getElementById('chatInterface').style.display = 'block';
+                if (!currentChatId) {
+                    createNewChat();
+                }
+            }, 2000);
+        }
+
+        function createNewChat() {
+            // Save current chat before starting new one
+            if (currentChatId) {
+                saveCurrentChat();
+            }
+            currentChatId = 'chat_' + Date.now();
+            const newChat = {
+                id: currentChatId,
+                title: `Cosmic Chat ${chatCounter}`,
+                messages: []
+            };
+            chatHistory.unshift(newChat);
+            chatCounter++;
+            saveChatHistoryToStorage();
+            renderChatMessages(newChat);
+            updateChatHistoryDisplay();
+        }
+
+        function saveCurrentChat() {
+            // Find the current chat in chatHistory and update its messages
+            const chatMessages = [];
+            const chatMessagesDiv = document.getElementById('chatMessages');
+            const messageDivs = chatMessagesDiv.querySelectorAll('.message');
+            messageDivs.forEach(div => {
+                let sender = div.classList.contains('user') ? 'user' : 'ai';
+                let text = div.innerText.replace(/^You: |^Dovii AI: /, '');
+                chatMessages.push({ text, sender, timestamp: new Date() });
+            });
+            // Remove the initial greeting from AI if present
+            if (chatMessages.length > 0 && chatMessages[0].sender === 'ai' && chatMessages[0].text.includes('Greetings, cosmic explorer!')) {
+                chatMessages.shift();
+            }
+            const chat = chatHistory.find(c => c.id === currentChatId);
+            if (chat) {
+                chat.messages = chatMessages;
+            }
+            saveChatHistoryToStorage();
+        }
+
+        function updateChatHistoryDisplay() {
+            const historyContainer = document.getElementById('chatHistory');
+            historyContainer.innerHTML = '';
+            chatHistory.forEach(chat => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'chat-history-item';
+                if (chat.id === currentChatId) {
+                    historyItem.classList.add('active');
+                }
+                historyItem.innerHTML = `
+                    <div style="font-weight: 600; margin-bottom: 5px;">${chat.title}</div>
+                    <div style="font-size: 0.8rem; color: #888;">${chat.messages.length} messages</div>
+                `;
+                historyItem.onclick = () => loadChatWithLoading(chat.id);
+                historyContainer.appendChild(historyItem);
+            });
+        }
+
+        function loadChatWithLoading(chatId) {
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML = `<div class="message ai"><strong>Dovii AI:</strong> Loading chats...</div>`;
+            setTimeout(() => {
+                loadChat(chatId);
+            }, 1000);
+        }
+
+        function loadChat(chatId) {
+            currentChatId = chatId;
+            const chat = chatHistory.find(c => c.id === chatId);
+            if (chat) {
+                renderChatMessages(chat);
+                updateChatHistoryDisplay();
+            }
+        }
+
+        function renderChatMessages(chat) {
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML = `
+                <div class="message ai">
+                    <strong>Dovii AI:</strong> Greetings, cosmic explorer! I'm Dovii, your AI assistant from the digital cosmos. How may I help you navigate the universe of knowledge today? ✨
+                </div>
+            `;
+            chat.messages.forEach(msg => {
+                addMessageToChat(msg.text, msg.sender, false); // No animation for history
+            });
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function toggleImageInput() {
+            const urlInput = document.getElementById('imageUrlInput');
+            const fileInput = document.getElementById('fileUploadInput');
+            const preview = document.getElementById('imagePreviewContainer');
+            if (urlInput.style.display === 'none' || urlInput.style.display === '') {
+                urlInput.style.display = 'block';
+                fileInput.style.display = 'block';
+                preview.style.display = 'block';
+            } else {
+                urlInput.style.display = 'none';
+                fileInput.style.display = 'none';
+                preview.style.display = 'none';
+                urlInput.value = '';
+                fileInput.value = '';
+                preview.innerHTML = '';
+            }
+        }
+
+        // Handle file upload
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.getElementById('fileUploadInput');
+            const urlInput = document.getElementById('imageUrlInput');
+            const preview = document.getElementById('imagePreviewContainer');
+            fileInput.addEventListener('change', function() {
+                if (fileInput.files && fileInput.files[0]) {
+                    const formData = new FormData();
+                    formData.append('file', fileInput.files[0]);
+                    preview.innerHTML = 'Uploading...';
+                    fetch('/upload-image', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.image_url) {
+                            urlInput.value = data.image_url;
+                            // Show thumbnail preview
+                            preview.innerHTML = `<img src="${data.image_url}" class="image-preview-thumb"> <span class="image-preview-remove" onclick="removeImagePreview()">✖</span>`;
+                        } else {
+                            preview.innerHTML = `<span style='color:#ff6b6b'>Upload failed</span>`;
+                        }
+                    })
+                    .catch(() => {
+                        preview.innerHTML = `<span style='color:#ff6b6b'>Upload failed</span>`;
+                    });
+                }
+            });
+        });
+
+        function removeImagePreview() {
+            document.getElementById('imageUrlInput').value = '';
+            document.getElementById('fileUploadInput').value = '';
+            document.getElementById('imagePreviewContainer').innerHTML = '';
+        }
+
+        function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const imageUrlInput = document.getElementById('imageUrlInput');
+            const messageText = messageInput.value.trim();
+            const imageUrl = imageUrlInput.value.trim();
+            if (messageText === '' && imageUrl === '') return;
+            addMessageToChat(messageText, 'user');
+            // Save to current chat
+            const chat = chatHistory.find(c => c.id === currentChatId);
+            if (chat) {
+                chat.messages.push({
+                    text: messageText,
+                    sender: 'user',
+                    timestamp: new Date()
+                });
+                saveChatHistoryToStorage();
+            }
+            messageInput.value = '';
+            imageUrlInput.value = '';
+            document.getElementById('fileUploadInput').value = '';
+            document.getElementById('imagePreviewContainer').innerHTML = '';
+            document.getElementById('imagePreviewContainer').style.display = 'none';
+            imageUrlInput.style.display = 'none';
+            document.getElementById('fileUploadInput').style.display = 'none';
+            // Show prominent loading message from AI
+            const chatMessages = document.getElementById('chatMessages');
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'message ai';
+            loadingDiv.innerHTML = `<strong>Dovii AI:</strong> <span id="aiLoadingText">Dovii is thinking<span class="dot">.</span></span>`;
+            chatMessages.appendChild(loadingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            // Animate dots for 'thinking'
+            let dotCount = 1;
+            let thinkingInterval = setInterval(() => {
+                const dots = '.'.repeat(dotCount);
+                document.getElementById('aiLoadingText').innerHTML = `Dovii is thinking<span class="dot">${dots}</span>`;
+                dotCount = (dotCount % 3) + 1;
+            }, 500);
+
+            // If imageUrl is provided, send both message and imageUrl to backend
+            if (imageUrl) {
+                fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message: messageText, image_url: imageUrl })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    clearInterval(thinkingInterval);
+                    chatMessages.removeChild(loadingDiv);
+                    if (data.reply) {
+                        addMessageToChat(data.reply, 'ai', true);
+                        if (chat) {
+                            chat.messages.push({
+                                text: data.reply,
+                                sender: 'ai',
+                                timestamp: new Date()
+                            });
+                            saveChatHistoryToStorage();
+                        }
+                    } else if (data.error) {
+                        addMessageToChat('Error: ' + data.error, 'ai');
+                    }
+                    updateChatHistoryDisplay();
+                })
+                .catch(error => {
+                    clearInterval(thinkingInterval);
+                    chatMessages.removeChild(loadingDiv);
+                    addMessageToChat('Error: ' + error, 'ai');
+                });
+                return;
+            }
+            // Otherwise, send to /chat as normal
+            fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: messageText })
+            })
+            .then(response => response.json())
+            .then(data => {
+                clearInterval(thinkingInterval);
+                // Remove loading message
+                chatMessages.removeChild(loadingDiv);
+                if (data.reply) {
+                    addMessageToChat(data.reply, 'ai', true);
+                    if (chat) {
+                        chat.messages.push({
+                            text: data.reply,
+                            sender: 'ai',
+                            timestamp: new Date()
+                        });
+                        saveChatHistoryToStorage();
+                    }
+                } else if (data.error) {
+                    addMessageToChat('Error: ' + data.error, 'ai');
+                }
+                updateChatHistoryDisplay();
+            })
+            .catch(error => {
+                clearInterval(thinkingInterval);
+                chatMessages.removeChild(loadingDiv);
+                addMessageToChat('Error: ' + error, 'ai');
+            });
+        }
+
+        // Enhanced AI typing: letter by letter, with code/image support
+        function addMessageToChat(text, sender, animate = true) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            if (sender === 'user') {
+                messageDiv.innerHTML = `<strong>You:</strong> ${text}`;
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            } else {
+                // AI message: parse for code blocks and images
+                let parsed = parseAIContent(text);
+                messageDiv.innerHTML = `<strong>Dovii AI:</strong> <span class="ai-typewriter"></span>`;
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                const typewriterSpan = messageDiv.querySelector('.ai-typewriter');
+                if (!animate) {
+                    // Instantly render all blocks (no animation)
+                    for (const block of parsed) {
+                        if (block.type === 'text') {
+                            const paraElem = document.createElement('span');
+                            paraElem.textContent = block.content;
+                            paraElem.innerHTML += '<br>';
+                            typewriterSpan.appendChild(paraElem);
+                        } else if (block.type === 'list') {
+                            const ul = document.createElement('ul');
+                            ul.style.listStyleType = 'decimal';
+                            ul.style.margin = '8px 0 8px 24px';
+                            ul.style.padding = '0';
+                            for (const item of block.items) {
+                                const li = document.createElement('li');
+                                li.textContent = item.replace(/^\d+\.\s/, '');
+                                ul.appendChild(li);
+                            }
+                            typewriterSpan.appendChild(ul);
+                        } else if (block.type === 'code') {
+                            const embedDiv = document.createElement('div');
+                            embedDiv.className = 'ai-embed-msg';
+                            embedDiv.innerHTML = `
+                                <div class="embed-header">
+                                    <span>📄 Code</span>
+                                    <button class="copy-btn" onclick="navigator.clipboard.writeText(\`${escapeHtml(block.content)}\`)">Copy</button>
+                                </div>
+                                <pre><code>${escapeHtml(block.content)}</code></pre>
+                            `;
+                            typewriterSpan.appendChild(embedDiv);
+                        } else if (block.type === 'image') {
+                            const imgElem = document.createElement('img');
+                            imgElem.src = block.content;
+                            imgElem.alt = 'AI provided image';
+                            imgElem.style.maxWidth = '300px';
+                            imgElem.style.display = 'block';
+                            imgElem.style.margin = '10px 0';
+                            typewriterSpan.appendChild(imgElem);
+                        }
+                    }
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                    return;
+                }
+                // Letter-by-letter typing for each parsed block (animated)
+                let blockIndex = 0;
+                function typeBlock() {
+                    if (blockIndex >= parsed.length) {
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                        return;
+                    }
+                    const block = parsed[blockIndex];
+                    if (block.type === 'text') {
+                        let charIndex = 0;
+                        const paraElem = document.createElement('span');
+                        typewriterSpan.appendChild(paraElem);
+                        function typeChar() {
+                            if (charIndex < block.content.length) {
+                                paraElem.textContent += block.content[charIndex];
+                                charIndex++;
+                                chatMessages.scrollTop = chatMessages.scrollHeight;
+                                setTimeout(typeChar, 18);
+                            } else {
+                                paraElem.innerHTML += '<br>';
+                                blockIndex++;
+                                setTimeout(typeBlock, 350);
+                            }
+                        }
+                        typeChar();
+                    } else if (block.type === 'list') {
+                        // Animate each list item one by one
+                        const ul = document.createElement('ul');
+                        ul.style.listStyleType = 'decimal';
+                        ul.style.margin = '8px 0 8px 24px';
+                        ul.style.padding = '0';
+                        typewriterSpan.appendChild(ul);
+                        let itemIdx = 0;
+                        function typeListItem() {
+                            if (itemIdx >= block.items.length) {
+                                blockIndex++;
+                                setTimeout(typeBlock, 350);
+                                return;
+                            }
+                            const li = document.createElement('li');
+                            ul.appendChild(li);
+                            let charIdx = 0;
+                            const itemText = block.items[itemIdx].replace(/^\d+\.\s/, '');
+                            function typeListChar() {
+                                if (charIdx < itemText.length) {
+                                    li.textContent += itemText[charIdx];
+                                    charIdx++;
+                                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                                    setTimeout(typeListChar, 18);
+                                } else {
+                                    itemIdx++;
+                                    setTimeout(typeListItem, 200);
+                                }
+                            }
+                            typeListChar();
+                        }
+                        typeListItem();
+                    } else if (block.type === 'code') {
+                        const embedDiv = document.createElement('div');
+                        embedDiv.className = 'ai-embed-msg';
+                        embedDiv.innerHTML = `
+                            <div class="embed-header">
+                                <span>📄 Code</span>
+                                <button class="copy-btn" onclick="navigator.clipboard.writeText(\`${escapeHtml(block.content)}\`)">Copy</button>
+                            </div>
+                            <pre><code>${escapeHtml(block.content)}</code></pre>
+                        `;
+                        typewriterSpan.appendChild(embedDiv);
+                        blockIndex++;
+                        setTimeout(typeBlock, 350);
+                    } else if (block.type === 'image') {
+                        const imgElem = document.createElement('img');
+                        imgElem.src = block.content;
+                        imgElem.alt = 'AI provided image';
+                        imgElem.style.maxWidth = '300px';
+                        imgElem.style.display = 'block';
+                        imgElem.style.margin = '10px 0';
+                        typewriterSpan.appendChild(imgElem);
+                        blockIndex++;
+                        setTimeout(typeBlock, 350);
+                    }
+                }
+                typeBlock();
+            }
+        }
+
+        // Parse AI content for code blocks (```), images (http(s)://...jpg/png/gif), and text
+        function parseAIContent(text) {
+            const blocks = [];
+            const codeRegex = /```([\s\S]*?)```/g;
+            let lastIndex = 0;
+            let match;
+            while ((match = codeRegex.exec(text)) !== null) {
+                if (match.index > lastIndex) {
+                    blocks.push({ type: 'text', content: text.slice(lastIndex, match.index) });
+                }
+                blocks.push({ type: 'code', content: match[1].trim() });
+                lastIndex = codeRegex.lastIndex;
+            }
+            if (lastIndex < text.length) {
+                blocks.push({ type: 'text', content: text.slice(lastIndex) });
+            }
+            // Now look for image URLs in text blocks
+            const finalBlocks = [];
+            const imgRegex = /(https?:\/\/(?:[\w.-]+)\/(?:[\w\/-]+)\.(?:png|jpg|jpeg|gif))/ig;
+            for (const block of blocks) {
+                if (block.type === 'text') {
+                    let last = 0;
+                    let m;
+                    while ((m = imgRegex.exec(block.content)) !== null) {
+                        if (m.index > last) {
+                            finalBlocks.push({ type: 'text', content: block.content.slice(last, m.index) });
+                        }
+                        finalBlocks.push({ type: 'image', content: m[1] });
+                        last = imgRegex.lastIndex;
+                    }
+                    if (last < block.content.length) {
+                        finalBlocks.push({ type: 'text', content: block.content.slice(last) });
+                    }
+                } else {
+                    finalBlocks.push(block);
+                }
+            }
+            // Further split text blocks for numbered lists (1. ...\n2. ...)
+            const numberedListRegex = /(?:^|\n)(\d+)\.\s([^\n]+)/g;
+            const processedBlocks = [];
+            for (const block of finalBlocks) {
+                if (block.type === 'text') {
+                    let text = block.content;
+                    let listItems = [];
+                    let lastIdx = 0;
+                    let match;
+                    while ((match = numberedListRegex.exec(text)) !== null) {
+                        if (match.index > lastIdx) {
+                            // Add any text before the list
+                            processedBlocks.push({ type: 'text', content: text.slice(lastIdx, match.index) });
+                        }
+                        listItems.push(match[1] + '. ' + match[2]);
+                        lastIdx = numberedListRegex.lastIndex;
+                    }
+                    if (listItems.length > 0) {
+                        processedBlocks.push({ type: 'list', items: listItems });
+                        if (lastIdx < text.length) {
+                            processedBlocks.push({ type: 'text', content: text.slice(lastIdx) });
+                        }
+                    } else {
+                        processedBlocks.push(block);
+                    }
+                } else {
+                    processedBlocks.push(block);
+                }
+            }
+            return processedBlocks;
+        }
+
+        // Escape HTML for code blocks
+        function escapeHtml(text) {
+            return text.replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+        }
+
+        // On page load, load chat history and display
+        window.addEventListener('DOMContentLoaded', () => {
+            loadChatHistoryFromStorage();
+            updateChatHistoryDisplay();
+            if (chatHistory.length > 0) {
+                loadChat(chatHistory[0].id);
+            } else {
+                setTimeout(() => {
+                    if (chatHistory.length === 0) {
+                        createNewChat();
+                    }
+                }, 100);
+            }
+        });
+    </script>
+</body>
+</html>
